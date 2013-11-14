@@ -1,6 +1,6 @@
 package java.lang;
 
-public class Throwable() {
+public class Throwable {
 
 	protected String message;
 	protected Throwable cause = this;
@@ -28,9 +28,7 @@ public class Throwable() {
 		}
 	}
 	
-	public Throwable fillInStackTrace() {
-	
-	}
+	public native Throwable fillInStackTrace();
 	
 	public void printStackTrace() {
 		printStackTrace(System.err);
