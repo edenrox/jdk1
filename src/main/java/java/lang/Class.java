@@ -1,13 +1,18 @@
 package java.lang;
 
 public class Class {
+	
+	private boolean isInterface;
+	private String name;
+	private ClassLoader loader;
 
 	public String toString() {
 		return (isInterface() ? "interface " : "class ") + getName();
 	}
 	
-	public native String getName();
-		// Implementation dependent
+	public String getName() {
+		return name;
+	}
 	
 	public String getSimpleName() {
 		String name = getSimpleName();
@@ -18,8 +23,9 @@ public class Class {
 		return name;
 	}
 	
-	public native boolean isInterface();
-		// Implementation dependent
+	public boolean isInterface() {
+		return isInterface;
+	}
 	
 	public native Class getSuperclass();
 		// JNIEnv->GetSuperclass(env, thisObj);
@@ -40,6 +46,12 @@ public class Class {
 		// return JNIEnv->NewObject(env, clazz, methodID);
 	
 	public ClassLoader getClassLoader() {
-		return null;
+		return loader;
+	}
+	
+	public static Class forName(String className) 
+			throws ClassNotFoundException {
+		Object o = new Object();
+		return o.getClass().getClassLoader().loadClass(className, true);
 	}
 }
