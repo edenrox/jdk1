@@ -37,6 +37,6 @@ This work is based on the Java 1.0 Specification, but is a clean room
 implementation (aka, I didn't copy it from OpenJDK, GCJ, etc).  I'd like
 to find an appropriate license for this, but for now:
 
-# I own this code, so if you want to copy it, or use it, you'll need to contact me for a license
-# I do NOT own the specification, Oracle/Sun/IBM do, talk to them
-# None of the code is GPL'd or copied, this is a clean room implementation
+1. I own this code, so if you want to copy it, or use it, you'll need to contact me for a license
+1. I do NOT own the specification, Oracle/Sun/IBM do, talk to them
+1. None of the code is GPL'd or copied, this is a clean room implementation
