@@ -3,11 +3,11 @@ package java.util;
 public class StringTokenizer
 		implements Enumeration {
 		
-	private static final String WHITE_SPACE_DELIMITERS = " \t\n\x0B\f\r";
+	private static final String WHITE_SPACE_DELIMITERS = " \t\n\f\r";
 	
 	private String str;
 	private String delim;
-	private String returnTokens;
+	private boolean returnTokens;
 	private int pos;
 	
 	public StringTokenizer(String str, String delim, boolean returnTokens) {
@@ -22,7 +22,7 @@ public class StringTokenizer
 		init(str, WHITE_SPACE_DELIMITERS, false);
 	}
 	
-	private final init(String str, String delim, boolean returnTokens) {
+	private final void init(String str, String delim, boolean returnTokens) {
 		this.str = str;
 		this.delim = delim;
 		this.returnTokens = returnTokens;
@@ -30,7 +30,8 @@ public class StringTokenizer
 	}
 	
 	public boolean hasMoreTokens() {
-		if (pos < str.length())
+		return false;
+	}
 	
 	public String nextToken() {
 		int startPos = pos;
@@ -47,6 +48,7 @@ public class StringTokenizer
 		}
 		
 		// TODO: fix this
+		return "";
 	}	
 	
 	public String nextToken(String delim) {
@@ -65,5 +67,6 @@ public class StringTokenizer
 	
 	public int countTokens() {
 		// TODO: Implement this
+		return 0;
 	}
 }

@@ -79,9 +79,53 @@ public class Vector
 	}
 	
 	public final void addElement(Object obj) {
+		ensureCapacity(elementCount + 1);
 		
 		elementData[elementCount] = obj;
 		elementCount++;
+	}
+	
+	public final void insertElementAt(Object obj, int index) 
+			throws IndexOutOfBoundsException {
+		
+		if (index == elementCount) {
+			// add at the end of the list
+			addElement(obj);
+		} else {
+			// Otherwise check the index and add in the middle of the list
+			checkIndex(index);
+			ensureCapacity(elementCount + 1);
+			
+			elementCount++;
+			for(int i = elementCount; i > index; i--) {
+				elementData[i] = elementData[i-1];
+			}
+			elementData[index] = obj;
+		}
+	}
+	
+	public final boolean removeElement(Object o) {
+		int index = indexOf(o);
+		if (index >= 0) {
+			removeElementAt(index);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public final void removeElementAt(int index) 
+			throws IndexOutOfBoundsException {
+		checkIndex(index);
+		
+		elementCount--;
+		for(int i = index; i < elementCount; i++) {
+			elementData[i] = elementData[i+1];
+		}
+	}
+	
+	public final void removeAllElements() {
+		elementCount = 0;
 	}
 	
 	public final boolean isEmpty() {

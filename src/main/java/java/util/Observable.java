@@ -12,7 +12,7 @@ public class Observable {
 
 	public void addObserver(Observer o) {
 		if (!observers.contains(o)) {
-			observers.add(o);
+			observers.addElement(o);
 		}
 	}
 	

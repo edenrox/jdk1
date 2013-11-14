@@ -2,8 +2,6 @@ package java.util;
 
 public class HashtableEntry {
 
-	private static final int NULL_HASH_CODE = -1347;
-
 	private Object key;
 	private Object value;
 	private HashtableEntry next;

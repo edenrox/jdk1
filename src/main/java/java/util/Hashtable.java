@@ -154,7 +154,16 @@ public class Hashtable extends Dictionary implements Cloneable {
 	}
 	
 	protected void rehash() {
-		// noop
+		Enumeration entries = entries();
+		
+		count = count * 2;
+		table = new HashtableEntry[count];
+		while (entries.hasMoreElements()) {
+			HashtableEntry entry = (HashtableEntry) entries.nextElement();
+			int index = entry.getKey().hashCode() % count;
+			entry.setNext(table[index]);
+			table[index] = entry;
+		}
 	}
 	
 	public void clear() {
@@ -165,37 +174,19 @@ public class Hashtable extends Dictionary implements Cloneable {
 	}
 
 	public Enumeration keys() {
-		Vector entries = entries();
-		Vector keys = new Vector();
-		for(int i = 0; i < entries.size(); i++) {
-			HashtableEntry entry = (HashtableEntry) entries.elementAt(i);
-			keys.addElement(entry.getKey());
-		}
-		return keys.elements();
+		HashtableEnumeration rv = new HashtableEnumeration(table);
+		rv.makeKeyEnumeration();
+		return rv;
 	}
 	
 	public Enumeration elements() {
-		Vector entries = entries();
-		Vector elements = new Vector();
-		for(int i = 0; i < entries.size(); i++) {
-			HashtableEntry entry = (HashtableEntry) entries.elementAt(i);
-			elements.addElement(entry.getValue());
-		}
-		return elements.elements();
+		HashtableEnumeration rv = new HashtableEnumeration(table);
+		rv.makeValueEnumeration();
+		return rv;
 	}
 	
-	private Vector entries() {
-		Vector rv = new Vector();
-		
-		for (int i = 0; i < table.length; i++) {
-			HashtableEntry entry = table[i];
-			while (entry != null) {
-				rv.addElement(entry);
-				
-				entry = entry.getNext();
-			}
-		}
-		return rv;
+	private Enumeration entries() {
+		return new HashtableEnumeration(table);
 	}
 	
 
@@ -203,9 +194,9 @@ public class Hashtable extends Dictionary implements Cloneable {
 		StringBuffer sb = new StringBuffer();
 		sb.append("{");
 		
-		Vector entries = entries();
-		for (int i = 0; i < entries.size(); i++) {
-			HashtableEntry entry = (HashtableEntry) entries.elementAt(i);
+		Enumeration entries = entries();
+		while(entries.hasMoreElements()) {
+			HashtableEntry entry = (HashtableEntry) entries.nextElement();
 			sb.append(entry.toString());
 		}
 		
