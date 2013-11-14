@@ -8,7 +8,9 @@ public class Thread implements Runnable {
 	
 	protected ThreadGroup threadGroup;
 	protected String name;
+	protected int priority;
 	protected Runnable target;
+	protected boolean isDaemon;
 	
 	public Thread() {
 		init(null, null, name);
@@ -25,6 +27,8 @@ public class Thread implements Runnable {
 		this.threadGroup = group;
 		this.target = target;
 		this.name = name;
+		this.priority = NORM_PRIORITY;
+		this.isDaemon = false;
 	}
 	
 	public ThreadGroup getThreadGroup() {
@@ -33,7 +37,15 @@ public class Thread implements Runnable {
 	
 	
 	public void start() {
+		run0();
+	}
 	
+	private void run0() {
+		try {
+			run();
+		} catch(Throwable ex) {
+			threadGroup.uncaughtException(this, ex);
+		}
 	}
 	
 	public void run() {
@@ -42,12 +54,36 @@ public class Thread implements Runnable {
 		}
 	}
 	
-	public final void stop(Throwable o) {
+	public final void stop(Throwable thr) 
+			throws SecurityException, NullPointerException {
+		checkAccess();
+		if (thr == null) {
+			throw new NullPointerException("Cannot throw null");
+		}
 	
+		// TODO: implement this
 	}
 	
-	public final void stop() {
+	public final void stop() 
+			throws SecurityException {
+		stop(new ThreadDeath());
+	}
 	
+	public final void resume()
+			throws SecurityException {
+		checkAccess();
+		
+		// TODO: implement this
+		
+	}
+	
+	public final void suspend() {
+		
+	}
+	
+	public final void destroy() 
+		throws IllegalThreadStateException {
+		
 	}
 	
 	public void interrupt() {
@@ -57,6 +93,54 @@ public class Thread implements Runnable {
 	public boolean isInterrupted() {
 		return false;
 	}
+	
+	public final String getName() {
+		return name;
+	}
+	
+	public final void setName(String name) 
+			throws SecurityException {
+		checkAccess();
+		this.name = name;
+	}
+	
+	public final int getPriority() {
+		return priority;
+	}
+	
+	public final void setPriority(int newPriority) 
+			throws SecurityException, IllegalArgumentException {
+		checkAccess();
+		if (newPriority < MIN_PRIORITY) {
+			throw new IllegalArgumentException("priority is less than minimum");
+		}
+		if (newPriority > MAX_PRIORITY) {
+			throw new IllegalArgumentException("priority exceeds maximum");
+		}
+		this.priority = Math.min(newPriority, threadGroup.getMaxPriority());
+	}
+	
+	public final boolean isDaemon() {
+		return isDaemon;
+	}
+	
+	public final void setDaemon(boolean on)
+			throws SecurityException, IllegalThreadStateException {
+		checkAccess();
+		if (isAlive()) {
+			throw new IllegalThreadStateException("Cannot make daemon while alive");
+		}
+		isDaemon = on;
+	}
+	
+	public final boolean isAlive() {
+		return false;
+	}
+	
+	public int countStackFrames() {
+		return 5;
+	}
+	
 	
 	protected void checkAccess() {
 		SecurityManager secman = System.getSecurityManager();
@@ -75,7 +159,7 @@ public class Thread implements Runnable {
 
 
 	public static void dumpStack() {
-		
+		new Exception("Stack trace").printStackTrace();
 	}
 	
 	public static void yield() {
