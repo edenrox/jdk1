@@ -1,6 +1,12 @@
+# Binaries #
 *.class
 
 # Package Files #
 *.jar
 *.war
 *.ear
+/bin
+
+# IDE Files #
+.project
+.classpath
