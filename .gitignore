@@ -8,5 +8,6 @@
 /bin
 
 # IDE Files #
+.settings
 .project
 .classpath
