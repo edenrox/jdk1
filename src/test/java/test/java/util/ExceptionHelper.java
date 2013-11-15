@@ -1,4 +1,4 @@
-package alt.java.util;
+package test.java.util;
 
 import static org.junit.Assert.*;
 

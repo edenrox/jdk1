@@ -1,9 +1,12 @@
-package alt.java.util;
+package test.java.util;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import alt.java.util.EmptyStackException;
+import alt.java.util.Stack;
 
 public class StackTest {
 	

@@ -1,9 +1,13 @@
-package alt.java.util;
+package test.java.util;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import alt.java.util.Enumeration;
+import alt.java.util.NoSuchElementException;
+import alt.java.util.Vector;
 
 public class VectorTest {
 	

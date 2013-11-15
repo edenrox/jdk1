@@ -23,7 +23,7 @@ public class Properties extends Hashtable {
 	}
 	
 	public String getProperty(String key, String defaultValue) {
-		if (contains(key)) {
+		if (containsKey(key)) {
 			return getString(key);
 		} else if (defaults != null) {
 			return defaults.getProperty(key);
