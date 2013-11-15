@@ -58,16 +58,15 @@ public class System {
 	
 	public static void exit(int status)
 			throws SecurityException {
-		if (securityManager != null) {
-			securityManager.checkExit(status);
-		}
+		Runtime.getRuntime().exit(status);
 	}
 
-	public static native void gc();
-	
+	public static void gc() {
+		Runtime.getRuntime().gc();
+	}
 	
 	public static void runFinalization() {
-	
+		Runtime.getRuntime().runFinalization();
 	}
 	
 	public static void load(String filename) 
