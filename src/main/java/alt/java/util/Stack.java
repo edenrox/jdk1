@@ -30,7 +30,11 @@ public class Stack extends Vector {
 	}
 	
 	public int search(Object o) {
-		return size() - indexOf(o) + 1;
+		int lastIndex = lastIndexOf(o);
+		if (lastIndex == -1) {
+			return -1;
+		}
+		return size() - lastIndex;
 	}
 
 }

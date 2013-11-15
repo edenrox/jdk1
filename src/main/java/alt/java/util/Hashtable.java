@@ -134,20 +134,18 @@ public class Hashtable extends Dictionary implements Cloneable {
 		if (key == null) {
 			return false;
 		}
-		return (get(key) == null);
+		return (get(key) != null);
 	}
 	
 	public boolean contains(Object o) {
 		if (o == null) {
 			return false;
 		}
-		for (int i = 0; i < table.length; i++) {
-			HashtableEntry entry = table[i];
-			while (entry != null) {
-				if (entry.getValue().equals(o)) {
-					return true;
-				}
-				entry = entry.getNext();
+		Enumeration elements = elements();
+		while(elements.hasMoreElements()) {
+			Object element = elements.nextElement();
+			if (o.equals(element)) {
+				return true;
 			}
 		}
 		return false;
@@ -196,6 +194,9 @@ public class Hashtable extends Dictionary implements Cloneable {
 		
 		Enumeration entries = entries();
 		while(entries.hasMoreElements()) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
 			HashtableEntry entry = (HashtableEntry) entries.nextElement();
 			sb.append(entry.toString());
 		}

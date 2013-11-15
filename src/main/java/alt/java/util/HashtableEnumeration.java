@@ -46,16 +46,16 @@ public class HashtableEnumeration implements Enumeration {
 			throw new NoSuchElementException("no more elements");
 		}
 		HashtableEntry rv = cur;
-		rv = rv.getNext(); // advance to the next item
+		cur = cur.getNext(); // advance to the next item
 		
 		switch (type) {
 		case TYPE_KEYS:
-			return cur.getKey();
+			return rv.getKey();
 		case TYPE_VALUES:
-			return cur.getValue();
+			return rv.getValue();
 		case TYPE_ENTRIES:
 		default: 
-			return cur;	
+			return rv;	
 		}
 		
 	}
