@@ -34,12 +34,13 @@ public final class Boolean {
 	}
 	
 	public boolean equals(Object obj) {
-		if ((obj != null)
-				&& (value == obj.booleanValue())) {
-			return true;
-		} else {
-			return false;
+		if ((obj != null) && (obj instanceof Boolean)) {
+			Boolean that = (Boolean) obj;
+			if (value == that.booleanValue()) {
+				return true;
+			}
 		}
+		return false;
 	}
 	
 	public int hashCode() {
@@ -52,7 +53,7 @@ public final class Boolean {
 	
 	protected static boolean isTrueString(String s) {
 		if ((s != null) 
-				&& (s.equalsIgnoreCase(TRUE_STRING))) {
+				&& (TRUE_STRING.equalsIgnoreCase(s))) {
 			return true;
 		} else {
 			return false;
