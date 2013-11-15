@@ -17,7 +17,7 @@ public class Stack extends Vector {
 		return rv;
 	}
 	
-	public Object peek() {
+	public Object peek()
 			throws EmptyStackException {
 		if (isEmpty()) {
 			throw new EmptyStackException();
