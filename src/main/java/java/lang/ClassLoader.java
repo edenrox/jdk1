@@ -12,7 +12,7 @@ public abstract class ClassLoader {
 	protected abstract Class loadClass(String name, boolean resolve)
 			throws ClassNotFoundException;
 	
-	protected final Class defineClass(byte data[], int offset, int length) 
+	protected final Class defineClass(String name, byte[] data, int offset, int length) 
 			throws NullPointerException, IndexOutOfBoundsException, ClassFormatException {
 		if (data == null) {
 			throw new NullPointerException("data cannot be null");
@@ -27,8 +27,15 @@ public abstract class ClassLoader {
 			throw new IndexOutOfBoundsException("offset + length must be less than array length");
 		}
 		
-		
+		return defineClass0(data, offset, length);
 	}
+	protected final native Class defineClass0(String name, byte[] data, int offset, int length);
+		// jboolean isCopy = false;
+		// const char *charname =  env->GetStringUTFChars(name, &isCopy);
+		// data += offset;
+		// jclass rv = env->DefineClass(charname, thisObj, data, len);
+		// env->ReleaseStringUTFChars(env, name, charname);
+		// return rv;
 	
 	protected final void resolveClass(Class c) 
 			throws NullPointerException {
@@ -41,6 +48,8 @@ public abstract class ClassLoader {
 	protected final Class findSystemClass(String name)
 			throws ClassNotFoundException {
 		
+		
+		return null;
 	}
 	
 }
