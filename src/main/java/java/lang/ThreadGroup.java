@@ -149,7 +149,19 @@ public class ThreadGroup {
 	}
 	
 	public ThreadGroup[] allGroups() {
-		
+		ThreadGroup[] rv = new ThreadGroup[allGroupsCount()];
+		allGroups0(rv, 0);
+		return rv;
+	}
+	private int allGroups0(ThreadGroup[] dst, int offset) {
+		for(int i = 0; i < threadGroups.size(); i++) {
+			dst[i + offset] = (ThreadGroup) threadGroups.elementAt(i);
+		}
+		offset += threadGroups.size();
+		for(int i = 0; i < threadGroups.size(); i++) {
+			offset += allGroups0(dst, offset);
+		}
+		return offset;
 	}
 	
 	public void list() {
@@ -235,7 +247,7 @@ public class ThreadGroup {
 		for (int i = 0; i < threadGroups.size(); i++) {
 			ThreadGroup threadGroup = (ThreadGroup) threadGroups.elementAt(i);
 			threadGroup.resume();
-		}
+		} 
 	}
 	
 	public final void destroy()
