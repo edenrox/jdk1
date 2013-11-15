@@ -234,4 +234,38 @@ public class String {
 			return new String(value, startIndex, endIndex - startIndex);
 		}
 	}
+	
+	public boolean equals(Object that) {
+		if ((that == null) || !(that instanceof String)) {
+			return false;
+		}
+		return equals((String) that, false);
+	}
+	
+	public boolean equalsIgnoreCase(String that) {
+		return equals(that, true);
+	}
+	
+	public boolean equals(String that, boolean ignoreCase) {
+		if (that == null) {
+			return false;
+		}
+		if (this.size != that.size) {
+			return false;
+		}
+		if (ignoreCase) {
+			for (int i = 0; i < size; i++) {
+				if (Character.toLowerCase(charAt(i)) != Character.toLowerCase(that.charAt(i))) {
+					return false;
+				}
+			}
+		} else {
+			for (int i = 0; i < size; i++) {
+				if (charAt(i) != that.charAt(i)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }
