@@ -12,4 +12,20 @@ public class Float extends Number {
 	public Float(float value) {
 		this.value = value;
 	}
+
+	public int intValue() {
+		return (int) value;
+	}
+
+	public long longValue() {
+		return (long) value;
+	}
+
+	public float floatValue() {
+		return value;
+	}
+
+	public double doubleValue() {
+		return (double) value;
+	}
 }
