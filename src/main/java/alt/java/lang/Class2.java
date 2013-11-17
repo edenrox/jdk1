@@ -1,5 +1,7 @@
 package alt.java.lang;
 
+import java.lang.ClassNotFoundException;
+
 public class Class2 {
 	
 	private boolean isInterface;
@@ -23,24 +25,13 @@ public class Class2 {
 		return name;
 	}
 	
-	public boolean isInterface() {
-		return isInterface;
-	}
-	
+	public native boolean isInterface();
 	public native Class getSuperclass();
 		// JNIEnv->GetSuperclass(env, thisObj);
 	
-	public Class[] getInterfaces() {
-		return null;
-	}
-	
-	public Object newInstance()
-		throws InstantiationException, IllegalAccessException {
-		
-		return newInstance0();
-	}
-	
-	public native Object newInstance0();
+	public native Class[] getInterfaces();	
+	public native Object newInstance() throws InstantiationException, IllegalAccessException;
+
 		// jclass clazz = thisObj;
 		// jmethodID methodID = JNIEnv->GetMethodID(env, clazz, "init", "V");
 		// return JNIEnv->NewObject(env, clazz, methodID);
@@ -49,10 +40,9 @@ public class Class2 {
 		return loader;
 	}
 	
-	public static Class2 forName(String className) 
+	public static Class forName(String className) 
 			throws ClassNotFoundException {
-		alt.java.lang.Object2 o = new alt.java.lang.Object2();
-		//return (Class2) o.getClass().getClassLoader().loadClass(className, true);
-		return null;
+		Object o = new Object();
+		return o.getClass().getClassLoader().loadClass(className);
 	}
 }

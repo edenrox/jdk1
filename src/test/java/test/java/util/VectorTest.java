@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.hopkins.java.test.ExceptionHelper;
+
 import alt.java.util.Enumeration;
 import alt.java.util.NoSuchElementException;
 import alt.java.util.Vector;

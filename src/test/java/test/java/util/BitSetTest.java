@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.hopkins.java.test.ExceptionHelper;
+
 import alt.java.util.BitSet;
 
 public class BitSetTest {

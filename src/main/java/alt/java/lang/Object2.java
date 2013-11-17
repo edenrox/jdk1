@@ -2,13 +2,7 @@ package alt.java.lang;
 
 public class Object2 {
 
-	public final Class2 getClass2() {
-		return null;
-	}
 	
-	public final String toString() {
-		return toString2().toString();
-	}
 	
 	public String2 toString2() {
 		return String2.fromString(getClass().getName() + "@" + Integer.toHexString(hashCode()));
@@ -18,34 +12,24 @@ public class Object2 {
 		return (this == obj);
 	}
 	
-	public int hashCode() {
-		return super.hashCode();
-	}
+	
 			
-	protected Object2 clone2()
-		throws CloneNotSupportedException {
-		
+	protected Object clone() {
 		String msg = getClass().getName() + " does not support cloning";
-		throw new CloneNotSupportedException(msg);
+		//throw new CloneNotSupportedException(msg);
+		
+		return null;
 	}
 	
-	protected void finalize()
-		throws Throwable {
+	protected void finalize() throws Throwable {
 		// default implementation does nothing
 	}
 	
-	public final void notifyAll2() {
-		notifyAll();
-	}
-	
-	public void wait2(long timeout)
-			throws InterruptedException {
-		try {
-			wait(timeout);
-		} catch (java.lang.InterruptedException ex) {
-			throw new InterruptedException();
-		}
-	}
+	public final native Class2 getClass2();
+	public native int hashCode();
+	public native final void notify2();
+	public native final void notifyAll2();
+	public native final void wait2(long timeout);
 
 	public final void wait2()
 			throws InterruptedException {

@@ -1,4 +1,4 @@
-package test.java.util;
+package com.hopkins.java.test;
 
 import static org.junit.Assert.*;
 
