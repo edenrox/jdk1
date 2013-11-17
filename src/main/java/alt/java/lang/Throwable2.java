@@ -1,5 +1,7 @@
 package alt.java.lang;
 
+import alt.java.io.PrintStream;
+
 public class Throwable2 {
 
 	protected String message;
@@ -34,7 +36,7 @@ public class Throwable2 {
 		printStackTrace(System.err);
 	}
 	
-	public void printStackTrace(java.io.PrintStream s) {
+	public void printStackTrace(PrintStream s) {
 		s.println(getClass().getName());
 		if (stackTrace != null) {
 			for(int i = 0; i < stackTrace.length; i++) {

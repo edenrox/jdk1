@@ -2,21 +2,27 @@ package alt.java.lang;
 
 public class Object2 {
 
-	public final native Class2 getClass2();
-		// JNIEnv->GetObjectClass(env, thisObj);
+	public final Class2 getClass2() {
+		return null;
+	}
 	
-	public String toString() {
-		return getClass().getName() + "@" + Integer.toHexString(hashCode());
+	public final String toString() {
+		return toString2().toString();
+	}
+	
+	public String2 toString2() {
+		return String2.fromString(getClass().getName() + "@" + Integer.toHexString(hashCode()));
 	}
 	
 	public boolean equals(Object obj) {
 		return (this == obj);
 	}
 	
-	public native int hashCode();
-		// 
+	public int hashCode() {
+		return super.hashCode();
+	}
 			
-	protected Object clone2()
+	protected Object2 clone2()
 		throws CloneNotSupportedException {
 		
 		String msg = getClass().getName() + " does not support cloning";
@@ -25,20 +31,24 @@ public class Object2 {
 	
 	protected void finalize()
 		throws Throwable {
-		
 		// default implementation does nothing
 	}
 	
-	/*
-	
-	public final native void notifyAll();
-	
-	public final native void wait(long timeout)
-			throws InterruptedException;
-
-	public final void wait()
-			throws InterruptedException {
-		wait(0);
+	public final void notifyAll2() {
+		notifyAll();
 	}
-		*/
+	
+	public void wait2(long timeout)
+			throws InterruptedException {
+		try {
+			wait(timeout);
+		} catch (java.lang.InterruptedException ex) {
+			throw new InterruptedException();
+		}
+	}
+
+	public final void wait2()
+			throws InterruptedException {
+		wait2(0);
+	}
 }

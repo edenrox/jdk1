@@ -4,9 +4,9 @@ public class Hashtable extends Dictionary implements Cloneable {
 
 	private static final float DEFAULT_LOAD_FACTOR = 0.75f;
 	
-	private float maxLoadFactor;
-	private int count;
-	private HashtableEntry[] table;
+	protected float maxLoadFactor;
+	protected int count;
+	protected HashtableEntry[] table;
 	
 	public Hashtable() {
 		init(10, DEFAULT_LOAD_FACTOR);
@@ -46,13 +46,16 @@ public class Hashtable extends Dictionary implements Cloneable {
 	}
 	
 	private int indexForKey(Object key) {
-		return key.hashCode() % table.length;
+		return Math.abs(key.hashCode()) % table.length;
 	}
 	
 	public Object get(Object key) 
 			throws NullPointerException {
 		if (key == null) {
 			throw new NullPointerException("Cannot use a null key");
+		}
+		if (isEmpty()) {
+			return null;
 		}
 		int index = indexForKey(key);
 		
@@ -73,6 +76,9 @@ public class Hashtable extends Dictionary implements Cloneable {
 		}
 		if (element == null) {
 			throw new NullPointerException("Cannot use a null value");
+		}
+		if (table.length == 0) {
+			rehash();
 		}
 		int index = indexForKey(key);
 		
@@ -110,6 +116,9 @@ public class Hashtable extends Dictionary implements Cloneable {
 		if (key == null) {
 			throw new NullPointerException("Cannot use a null key");
 		}
+		if (isEmpty()) {
+			return null;
+		}
 		
 		int index = indexForKey(key);
 		HashtableEntry prevEntry = null;
@@ -126,6 +135,8 @@ public class Hashtable extends Dictionary implements Cloneable {
 				count--;
 				return entry.getValue();
 			}
+			prevEntry = entry;
+			entry = entry.getNext();
 		}
 		return null;
 	}
@@ -141,6 +152,9 @@ public class Hashtable extends Dictionary implements Cloneable {
 		if (o == null) {
 			return false;
 		}
+		if (isEmpty()) {
+			return false;
+		}
 		Enumeration elements = elements();
 		while(elements.hasMoreElements()) {
 			Object element = elements.nextElement();
@@ -153,12 +167,16 @@ public class Hashtable extends Dictionary implements Cloneable {
 	
 	protected void rehash() {
 		Enumeration entries = entries();
-		
-		count = count * 2;
-		table = new HashtableEntry[count];
+		int newSize = table.length;
+		if (newSize < 5) {
+			newSize = 10;
+		} else {
+			newSize += Math.min(newSize, 64);
+		}
+		table = new HashtableEntry[newSize];
 		while (entries.hasMoreElements()) {
 			HashtableEntry entry = (HashtableEntry) entries.nextElement();
-			int index = entry.getKey().hashCode() % count;
+			int index = entry.getKey().hashCode() % newSize;
 			entry.setNext(table[index]);
 			table[index] = entry;
 		}

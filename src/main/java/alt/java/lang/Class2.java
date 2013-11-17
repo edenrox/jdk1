@@ -3,20 +3,20 @@ package alt.java.lang;
 public class Class2 {
 	
 	private boolean isInterface;
-	private String name;
+	private String2 name;
 	private ClassLoader loader;
 
-	public String toString() {
-		return (isInterface() ? "interface " : "class ") + getName();
+	public String2 toString2() {
+		return String2.fromString((isInterface() ? "interface " : "class ") + getName());
 	}
 	
-	public String getName() {
+	public String2 getName() {
 		return name;
 	}
 	
-	public String getSimpleName() {
-		String name = getSimpleName();
-		int pos = name.lastIndexOf(".");
+	public String2 getSimpleName() {
+		String2 name = getName();
+		int pos = name.lastIndexOf(String2.fromString("."));
 		if (pos > 0) {
 			name = name.substring(pos+1);
 		}

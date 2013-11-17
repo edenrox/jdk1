@@ -5,7 +5,7 @@ public class StringTokenizer
 		
 	private static final String WHITE_SPACE_DELIMITERS = " \t\n\f\r";
 	
-	private String str;
+	private char[] chars;
 	private String delim;
 	private boolean returnTokens;
 	private int pos;
@@ -23,32 +23,41 @@ public class StringTokenizer
 	}
 	
 	private final void init(String str, String delim, boolean returnTokens) {
-		this.str = str;
+		this.chars = new char[str.length()];
+		str.getChars(0, str.length(), this.chars, 0);
 		this.delim = delim;
 		this.returnTokens = returnTokens;
 		this.pos = 0;
 	}
 	
+	private boolean isDelimChar(char c) {
+		return (delim.indexOf(c) > -1);
+	}
+	
 	public boolean hasMoreTokens() {
-		return false;
+		while ((pos < chars.length) && (isDelimChar(chars[pos]))) {
+			pos++;
+		}
+		return (pos < chars.length);
 	}
 	
 	public String nextToken() {
+		if (!hasMoreTokens()) {
+			throw new NoSuchElementException("No more tokens in string");
+		}
 		int startPos = pos;
-		boolean done = false;
 		
-		while (!done) {
-			if (pos >= str.length()) {
-				done = true;
-			}
-			if (delim.indexOf(str.charAt(pos)) >= 0) {
-				done = true;
-			}
+		// find the first non delim char (or end of string)
+		while ((pos < chars.length) && (!isDelimChar(chars[pos]))) {
 			pos++;
 		}
 		
-		// TODO: fix this
-		return "";
+		if (returnTokens) {
+			// advance to the end of the next group of delimiters
+			hasMoreTokens();
+		}
+		
+		return new String(chars, startPos, pos - startPos);
 	}	
 	
 	public String nextToken(String delim) {

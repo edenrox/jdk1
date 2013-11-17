@@ -1,8 +1,10 @@
 package alt.java.lang;
 
-import java.io.InputStream;
-import java.io.PrintStream;
-
+import alt.java.io.FileOutputStream;
+import alt.java.io.InputStream;
+import alt.java.io.PrintStream;
+import alt.java.io.FileDescriptor;
+import alt.java.io.FileInputStream;
 import alt.java.lang.ArrayStoreException;
 import alt.java.lang.IndexOutOfBoundsException;
 import alt.java.util.Properties;
@@ -12,6 +14,12 @@ public class System {
 	public static InputStream in;
 	public static PrintStream out;
 	public static PrintStream err;
+	
+	static {
+		in = new FileInputStream(FileDescriptor.in);
+		out = new PrintStream(new FileOutputStream(FileDescriptor.out));
+		err = new PrintStream(new FileOutputStream(FileDescriptor.err));
+	}
 
 	private static SecurityManager securityManager;
 	private static Properties properties;

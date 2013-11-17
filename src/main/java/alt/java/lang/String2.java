@@ -271,4 +271,12 @@ public class String2 {
 		}
 		return true;
 	}
+	
+	public static final String2 fromString(String that) {
+		return new String2(that.toCharArray());
+	}
+	
+	public String toString() {
+		return new String(value, offset, size);
+	}
 }

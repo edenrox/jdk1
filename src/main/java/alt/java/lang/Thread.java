@@ -18,7 +18,7 @@ public class Thread implements Runnable {
 	
 	public Thread() 
 			throws SecurityException, IllegalThreadStateException {
-		init(null, null, name);
+		init(null, null, null);
 	}
 	public Thread(String name) 
 			throws SecurityException, IllegalThreadStateException {
@@ -28,14 +28,51 @@ public class Thread implements Runnable {
 			throws SecurityException, IllegalThreadStateException {
 		init(null, target, null);
 	}
+	
+	public Thread(Runnable target, String name) {
+		init(null, target, name);
+	}
+	
+	
+	public Thread(ThreadGroup group, Runnable target) {
+		init(group, target, null);
+	}
+	
+	public Thread(ThreadGroup group, String name) {
+		init(group, null, name);
+	}
+	
+	public Thread(ThreadGroup group, Runnable target, String name) {
+		init(group, target, name);
+	}
 		
-	protected final void init(ThreadGroup group, Runnable target, String name) 
+	private final void init(ThreadGroup group, Runnable target, String name) 
 			throws SecurityException, IllegalThreadStateException {
+		
+		if (group == null) {
+			group = getDefaultThreadGroup();
+		}
+		if (name == null) {
+			name = getDefaultThreadName(group);
+		}
+		
 		this.threadGroup = group;
+		if (group != null) {
+			group.addThread(this);
+		}
+		
 		this.target = target;
 		this.name = name;
 		this.priority = NORM_PRIORITY;
 		this.isDaemon = false;
+	}
+	
+	private final ThreadGroup getDefaultThreadGroup() {
+		return null;
+	}
+	
+	private final String getDefaultThreadName(ThreadGroup g) {
+		return null;
 	}
 	
 	public ThreadGroup getThreadGroup() {
@@ -146,6 +183,24 @@ public class Thread implements Runnable {
 	
 	public int countStackFrames() {
 		return 5;
+	}
+	
+	public void join() throws InterruptedException {
+		
+	}
+	
+	public void join(long millis) throws InterruptedException {
+		join(millis, 0);
+	}
+	
+	public void join(long millis, int nanos) throws InterruptedException {
+		if (millis < 0) {
+			throw new IllegalArgumentException("millis cannot be negative");
+		}
+		if ((nanos < 0) || (nanos > 999999)) {
+			throw new IllegalArgumentException("nanos must be in range 0 - 999999");
+		}
+		
 	}
 	
 	

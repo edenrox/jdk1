@@ -1,6 +1,6 @@
 package alt.java.lang;
 
-import java.util.Vector;
+import alt.java.util.Vector;
 
 public class ThreadGroup {
 
@@ -33,10 +33,18 @@ public class ThreadGroup {
 		
 		parent.checkAccess();
 		this.parent = parent;
+		parent.addThreadGroup(this);
 		this.name = name;
 		this.threads = new Vector();
 		this.threadGroups = new Vector();
 		this.isDestroyed = false;
+	}
+	
+	protected void addThread(Thread toAdd) {
+		threads.addElement(toAdd);
+	}
+	protected void addThreadGroup(ThreadGroup toAdd) {
+		threadGroups.addElement(toAdd);
 	}
 	
 	public final String getName() {
@@ -86,13 +94,17 @@ public class ThreadGroup {
 		return isDaemon;
 	}
 	
+	public boolean isDestroyed() {
+		return isDestroyed;
+	}
+	
 	public final void setDaemon(boolean value)
 			throws SecurityException {
 		checkAccess();
 		isDaemon = value;
 	}
 	
-	public final int threadsCount() {
+	/*public final int threadsCount() {
 		return threads.size();
 	}
 	
@@ -162,7 +174,7 @@ public class ThreadGroup {
 			offset += allGroups0(dst, offset);
 		}
 		return offset;
-	}
+	}*/
 	
 	public void list() {
 		list0(0);
@@ -197,14 +209,14 @@ public class ThreadGroup {
 		if (parent == null) {
 			if (!(e instanceof ThreadDeath)) {
 				System.err.println("Uncaught exception on thread: " + t.toString());
-				e.printStackTrace(System.err);
+				//e.printStackTrace(System.err);
 			}
 		} else {
 			parent.uncaughtException(t, e);
 		}
 	}
 	
-	protected final void checkAccess() {
+	public final void checkAccess() {
 		SecurityManager secman = System.getSecurityManager();
 		if (secman != null) {
 			secman.checkAccess(this);
@@ -271,5 +283,88 @@ public class ThreadGroup {
 			+ ",maxpri="
 			+ maxPriority
 			+ "]";
+	}
+	
+	public int activeCount() {
+		int rv = 0;
+		rv += threads.size();
+		for(int i = 0; i < threadGroups.size(); i++) {
+			ThreadGroup item = (ThreadGroup) threadGroups.elementAt(i);
+			rv += item.activeCount();
+		}
+		return rv;
+	}
+	
+	public int activeGroupCount() {
+		int rv = 0;
+		rv += threadGroups.size();
+		for(int i = 0; i < threadGroups.size(); i++) {
+			ThreadGroup item = (ThreadGroup) threadGroups.elementAt(i);
+			rv += item.activeGroupCount();
+		}
+		return rv;
+	}
+
+	
+	public int enumerate(Thread[] list) {
+		return enumerate(list, true);
+	}
+	
+	public int enumerate(Thread[] list, boolean recursive) {
+		return enumerate0(list, 0, recursive);
+	}
+	
+	private int enumerate0(Thread[] dest, int offset, boolean recursive) {
+		int pos = offset;
+		for(int i = 0; i < threads.size(); i++) {
+			if (pos >= dest.length) {
+				break;
+			}
+			dest[pos] = (Thread) threads.elementAt(i);
+			pos++;
+		}
+		if (recursive) {
+			for(int i = 0; i < threadGroups.size(); i++) {
+				if (pos >= dest.length) {
+					break;
+				}
+				ThreadGroup item = (ThreadGroup) threadGroups.elementAt(i);
+				pos += item.enumerate0(dest, pos, recursive);
+			}
+		}
+		return pos - offset;
+	}
+	
+	public int enumerate(ThreadGroup[] list) {
+		return enumerate(list, true);
+	}
+	
+	public int enumerate(ThreadGroup[] list, boolean recursive) {
+		return enumerate0(list, 0, recursive);
+	}
+	
+	private int enumerate0(ThreadGroup[] dest, int offset, boolean recursive) {
+		int pos = offset;
+		for(int i = 0; i < threadGroups.size(); i++) {
+			if (pos >= dest.length) {
+				break;
+			}
+			dest[pos] = (ThreadGroup) threadGroups.elementAt(i);
+			pos++;
+		}
+		if (recursive) {
+			for(int i = 0; i < threadGroups.size(); i++) {
+				if (pos >= dest.length) {
+					break;
+				}
+				ThreadGroup item = (ThreadGroup) threadGroups.elementAt(i);
+				pos += item.enumerate0(dest, pos, recursive);
+			}
+		}
+		return pos - offset;
+	}
+	
+	public boolean allowThreadSuspension(boolean b) {
+		return b;
 	}
 }
