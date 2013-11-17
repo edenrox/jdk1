@@ -2,6 +2,9 @@ package test.java.util;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -73,6 +76,22 @@ public class PropertiesTest {
 			assertTrue(keys.removeElement(name));
 		}
 		assertTrue(keys.isEmpty());
+	}
+	
+	@Test
+	public void testList() throws Exception {
+		String expected =
+				  "key3: top3\n"
+				+ "key1: top1\n"
+				+ "key2: top2\n";
+		
+		// Build a PrintStream that writes to a buffer
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(baos);
+		top.list(ps);
+		String actual = baos.toString("utf8");
+		
+		assertEquals(expected, actual);
 	}
 	
 }
