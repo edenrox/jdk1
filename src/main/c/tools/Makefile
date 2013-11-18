@@ -1,14 +1,17 @@
 CC      = gcc
-CFLAGS  = -g -I /System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/
-LDFLAGS = -F/System/Library/Frameworks/JavaVM.framework/Frameworks -framework JavaVM
+CFLAGS  = -g -I/Library/Java/JavaVirtualMachines/jdk1.7.0_40.jdk/Contents/Home/include/ -I/Library/Java/JavaVirtualMachines/jdk1.7.0_40.jdk/Contents/Home/include/darwin
+LDFLAGS = -L/Library/Java/JavaVirtualMachines/jdk1.7.0_40.jdk/Contents/Home/jre/lib/jli -ljli
 
 all: ghettojava
 
-ghettojava: ghettojava.o
-	$(CC) $(LDFLAGS) -o $@ $^
+ghettojava: ghettojava.o HelloWorld.class
+	$(CC) $(LDFLAGS) -o $@ *.o
+	
+HelloWorld.class: HelloWorld.java
+	javac HelloWorld.java
 	
 ghettojava.o: ghettojava.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 	
 clean:
-	rm -f ghettojava *.o
+	rm -f ghettojava *.o *.class

@@ -3,7 +3,7 @@
 #include <jni.h>
 
 #define GHETTOJAVA_VERSION "0.1"
-#define STRING_CLASS "java.lang.String"
+#define STRING_CLASS "java/lang/String"
 
 // "ghettojava" - executable for runing java applications in the Ghetto Java VM
 
@@ -25,7 +25,7 @@ void runClassWithArgs(char *className, int argc, char *argv[]) {
 
 	JavaVMInitArgs vmargs;
 	vmargs.version = JNI_VERSION_1_6;
-	vmargs.nOptions = 3;
+	vmargs.nOptions = 0;
 	vmargs.options = options;
 	vmargs.ignoreUnrecognized = JNI_FALSE;
 
@@ -86,7 +86,8 @@ void runClassWithArgs(char *className, int argc, char *argv[]) {
 	// run the object's "main" method
 	(*env)->CallStaticVoidMethod(env, mainClassObj, mainMethodID, argsArray);
 
-	printf("6. Exiting\n");
+	printf("6. Destroying JVM\n");
+	(*jvm)->DestroyJavaVM(jvm);
 }
 
 void showVersion() {
