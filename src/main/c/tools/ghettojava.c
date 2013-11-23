@@ -2,8 +2,15 @@
 #include <string.h>
 #include <jni.h>
 
+//#define DEBUG
 #define GHETTOJAVA_VERSION "0.1"
 #define STRING_CLASS "java/lang/String"
+
+#ifdef DEBUG
+#define DEBUG_PRINT(...) do { fprintf( stderr, __VA_ARGS__); } while (0)
+#else
+#define DEBUG_PRINT(...) do {} while (0)
+#endif
 
 // "ghettojava" - executable for runing java applications in the Ghetto Java VM
 
@@ -11,7 +18,8 @@ void runClassWithArgs(char *className, int argc, char *argv[]) {
 	const char *methodName = "main";
 	const char *methodSignature = "([Ljava/lang/String;)V";
 
-	printf("1. Starting JVM\n");
+	DEBUG_PRINT("Verbose Debug Mode Enabled");
+	DEBUG_PRINT("1. Starting JVM\n");
 
 	// initialize the virtual machine
 	JavaVM *jvm;
@@ -25,51 +33,51 @@ void runClassWithArgs(char *className, int argc, char *argv[]) {
 
 	JavaVMInitArgs vmargs;
 	vmargs.version = JNI_VERSION_1_6;
-	vmargs.nOptions = 0;
+	vmargs.nOptions = 3;
 	vmargs.options = options;
 	vmargs.ignoreUnrecognized = JNI_FALSE;
 
 	int result = 0;
 	result = JNI_CreateJavaVM(&jvm, (void **)&env, &vmargs);
 	if (result != JNI_OK) {
-		printf(" - Error starting JVM\n");
+		fprintf(stderr, "Error starting JVM\n");
 		return;
 	} else {
-		printf(" - JVM Created\n");
+		DEBUG_PRINT(" - JVM Created\n");
 	}
 
-	printf("2. Looking up class\n");
+	DEBUG_PRINT("2. Looking up class\n");
 
 	// find the class
 	jclass mainClassObj = (*env)->FindClass(env, className);
 	if (!mainClassObj) {
-		printf(" - Error, could not find class: %s\n", className);
+		fprintf(stderr, "Error, could not find class: %s\n", className);
 		return;
 	} else {
-		printf(" - Class Found: %s\n", className);
+		DEBUG_PRINT(" - Class Found: %s\n", className);
 	}
 
-	printf("3. Looking for a main method\n");
+	DEBUG_PRINT("3. Looking for a main method\n");
 
 	// Find the main(String[] args) method
 	jmethodID mainMethodID = (*env)->GetStaticMethodID(env, mainClassObj, methodName, methodSignature);
 	if (mainMethodID == NULL) {
-		printf("Error, could not find main method for class.\n");
-		printf("Attempting to find: public void main(String[])\n");
+		fprintf(stderr, "Error, could not find main method for class.\n");
+		fprintf(stderr, "Attempting to find: public void main(String[])\n");
 		return;
 	} else {
-		printf(" - Main method found!\n");
+		DEBUG_PRINT(" - Main method found!\n");
 	}
 
-	printf("4. Creating String[] from arguments\n");
+	DEBUG_PRINT("4. Creating String[] from arguments\n");
 
 	// Build a java string array of the arguments
 	jclass stringClassObj = (*env)->FindClass(env, STRING_CLASS);
 	if (stringClassObj == NULL) {
-		printf(" - Error could not find class: %s\n", STRING_CLASS);
+		fprintf(stderr, " - Error could not find class: %s\n", STRING_CLASS);
 		return;
 	} else {
-		printf(" - String class found\n");
+		DEBUG_PRINT(" - String class found\n");
 	}
 
 	// Create an object array to hold the arguments
@@ -81,12 +89,16 @@ void runClassWithArgs(char *className, int argc, char *argv[]) {
 		(*env)->SetObjectArrayElement(env, argsArray, i, argString);
 	}
 
-	printf("5. Running main(String[]) method\n");
-
 	// run the object's "main" method
+	DEBUG_PRINT("5. Running main(String[]) method\n");
 	(*env)->CallStaticVoidMethod(env, mainClassObj, mainMethodID, argsArray);
 
-	printf("6. Destroying JVM\n");
+	// check if an exception was thrown while running the main method
+	if ((*env)->ExceptionCheck(env)) {
+		(*env)->ExceptionDescribe(env);
+	}
+
+	DEBUG_PRINT("7. Destroying JVM\n");
 	(*jvm)->DestroyJavaVM(jvm);
 }
 
