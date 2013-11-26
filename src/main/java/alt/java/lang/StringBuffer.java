@@ -1,7 +1,5 @@
 package alt.java.lang;
 
-import java.lang.*;
-
 public class StringBuffer {
 	private int size;
 	private char[] buffer;
