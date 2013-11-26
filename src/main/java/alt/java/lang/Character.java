@@ -42,6 +42,12 @@ public class Character {
 	
 	
 	
+	
+	
+	
+	
+	
+	
 	public static boolean isDefined(char c) {
 		return false;
 	}
@@ -130,6 +136,16 @@ public class Character {
 	}
 	
 	public static char toLowerCase(char c) {
+		if (('A' <= c) && (c <= 'Z')) {
+			return (char) (c + ('a' - 'A'));
+		}
+		return c;
+	}
+	
+	public static char toUpperCase(char c) {
+		if (('a' <= c) && (c <= 'z')) {
+			return (char) (c - ('a' - 'A'));
+		}
 		return c;
 	}
 }
