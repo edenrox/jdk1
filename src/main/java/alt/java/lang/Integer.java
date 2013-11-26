@@ -72,11 +72,25 @@ public class Integer extends Number {
 		return accum;
 	}
 	public static String toString(int i) {
-		return "";
+		return Integer.toString(i, 10);
 	}
 	
 	public static String toString(int i, int radix) {
-		return "";
+		StringBuffer sb = new StringBuffer(33);
+		boolean isNegative = false;
+		if (i == 0) {
+			return "0";
+		} else if (i < 0) {
+			isNegative = true;
+		}
+		while (i > 0) {
+			sb.append(Character.forDigit(i % radix, radix));
+			i = i / radix;
+		}
+		if (isNegative) {
+			sb.append('-');
+		}
+		return sb.reverse().toString();
 	}
 	
 	public static String toHexString(int i) {
