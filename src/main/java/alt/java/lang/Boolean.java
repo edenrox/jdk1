@@ -4,10 +4,10 @@ public final class Boolean{
 	public static final Boolean TRUE = new Boolean(true);
 	public static final Boolean FALSE = new Boolean(false);
 	
-	public static final String TRUE_STRING = "true";
-	public static final String FALSE_STRING = "false";
+	private static final String TRUE_STRING = "true";
+	private static final String FALSE_STRING = "false";
 	
-	protected boolean value;
+	private boolean value;
 	
 	public Boolean(boolean value) {
 		this.value = value;
@@ -51,7 +51,7 @@ public final class Boolean{
 		}
 	}
 	
-	protected static boolean isTrueString(String s) {
+	private static boolean isTrueString(String s) {
 		if ((s != null) 
 				&& (TRUE_STRING.equalsIgnoreCase(s))) {
 			return true;
