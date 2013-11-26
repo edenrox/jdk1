@@ -1,7 +1,10 @@
 package alt.java.lang;
 
-import alt.java.lang.Error;
-
 public class LinkageError extends Error {
-
+	public LinkageError() {
+		super();
+	}
+	public LinkageError(String message) {
+		super(message);
+	}
 }

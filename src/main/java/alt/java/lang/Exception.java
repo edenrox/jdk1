@@ -1,8 +1,5 @@
 package alt.java.lang;
 
-import java.lang.String;
-import java.lang.Throwable;
-
 public class Exception extends Throwable {
 	
 	public Exception() {

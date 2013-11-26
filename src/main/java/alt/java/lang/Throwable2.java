@@ -1,6 +1,6 @@
 package alt.java.lang;
 
-import alt.java.io.PrintStream;
+import java.io.PrintStream;
 
 public class Throwable2 {
 

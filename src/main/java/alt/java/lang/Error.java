@@ -1,7 +1,10 @@
 package alt.java.lang;
 
-import java.lang.Throwable;
-
 public class Error extends Throwable {
-
+	public Error() {
+		super();
+	}
+	public Error(String message) {
+		super(message);
+	}
 }

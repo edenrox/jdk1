@@ -1,9 +1,5 @@
 package alt.java.lang;
 
-import java.lang.RuntimeException;
-import java.lang.String;
-import java.lang.Throwable;
-
 public class ExceptionInInitializerError 
 		extends RuntimeException {
 	

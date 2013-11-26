@@ -1,7 +1,10 @@
 package alt.java.lang;
 
-import alt.java.lang.Exception;
-
 public class InterruptedException extends Exception {
-
+	public InterruptedException() {
+		super();
+	}
+	public InterruptedException(String message) {
+		super(message);
+	}
 }
