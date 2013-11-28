@@ -7,9 +7,6 @@ public class StringBufferInputStream extends InputStream {
 	protected int count;
 	
 	public StringBufferInputStream(String str) throws NullPointerException {
-		if (str == null) {
-			throw new NullPointerException("str cannot be null");
-		}
 		buffer = str;
 		pos = 0;
 		count = str.length();
@@ -29,7 +26,7 @@ public class StringBufferInputStream extends InputStream {
 		int toRead = Math.min(length, available());
 		if (toRead > 0) {
 			for(int i = 0; i < toRead; i++) {
-				bytes[offset + i] = (byte) (buffer.charAt(i) & 0xff);
+				bytes[offset + i] = (byte) (buffer.charAt(pos + i) & 0xff);
 			}
 			pos += toRead;
 			return toRead;

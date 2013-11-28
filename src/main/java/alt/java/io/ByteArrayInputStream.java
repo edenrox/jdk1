@@ -29,7 +29,7 @@ public class ByteArrayInputStream extends InputStream {
 	public int read(byte[] bytes, int offset, int length) {
 		int toRead = Math.min(length, available());
 		if (toRead > 0) {
-			System.arraycopy(buff, count, bytes, offset, toRead);
+			System.arraycopy(buff, pos, bytes, offset, toRead);
 			pos += toRead;
 			return toRead;
 		} else {

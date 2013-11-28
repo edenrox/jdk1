@@ -2,7 +2,7 @@ package alt.java.io;
 
 
 public class BufferedInputStream extends FilterInputStream {
-	public static final int DEFAULT_BUFFER_SIZE = 4096;
+	private static final int DEFAULT_BUFFER_SIZE = 4096;
 	
 	protected byte[] buf;
 	protected int count = 0;
@@ -29,7 +29,7 @@ public class BufferedInputStream extends FilterInputStream {
 		return numRead;
 	}
 	
-	public int read() throws IOException {
+	public synchronized int read() throws IOException {
 		if (pos == count) {
 			if (readToBuffer() < 1) {
 				return -1;
