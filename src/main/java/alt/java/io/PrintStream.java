@@ -4,6 +4,7 @@ public class PrintStream extends FilterOutputStream {
 	
 	private OutputStream out;
 	private boolean autoflush;
+	private boolean hasError;
 
 	public PrintStream(OutputStream out) {
 		this(out, true);
@@ -12,6 +13,27 @@ public class PrintStream extends FilterOutputStream {
 	public PrintStream(OutputStream out, boolean autoflush) {
 		this.out = out;
 		this.autoflush = autoflush;
+	}
+	
+	public boolean checkError() {
+		flush();
+		return hasError;
+	}
+	
+	public void close() {
+		try {
+			out.close();
+		} catch (IOException ex) {
+			hasError = true;
+		}
+	}
+	
+	public void flush() {
+		try {
+			out.flush();
+		} catch (IOException ex) {
+			hasError = true;
+		}
 	}
 	
 	public void write(int b) throws IOException{
@@ -31,49 +53,88 @@ public class PrintStream extends FilterOutputStream {
 	
 	private void tryWrite(int b) {
 		try {
-			out.write(b);
+			write(b);
 		} catch (IOException ex) {
-			throw new RuntimeException("Error writing to OutputStream");
+			hasError = true;
 		}
 	}
 	
+	public void print(boolean b) {
+		print(Boolean.toString(b));
+	}
 	public void print(byte b) {
 		tryWrite(b);
 	}
-	
 	public void print(char c) {
-		tryWrite(c);
+		tryWrite((byte) (c & 0xFF));
 	}
-	
+	public void print(char[] s) {
+		for(int i = 0; i < s.length; i++) {
+			print(s[i]);
+		}
+	}
+	public void print(double d) {
+		print(Double.toString(d));
+	}
+	public void print(float f) {
+		print(Float.toString(f));
+	}
 	public void print(int i) {
 		print(Integer.toString(i));
 	}
 	public void print(long l) {
 		print(Long.toString(l));
 	}
+	public void print(Object obj) {
+		print(String.valueOf(obj));
+	}
 	public void print(String str) {
-		
+		for(int i = 0; i < str.length(); i++) {
+			print(str.charAt(i));
+		}
 	}
 	
+	public void println() {
+		print(Character.LINE_SEPARATOR);
+	}
+	public void println(boolean b) {
+		print(b);
+		println();
+	}
+	public void println(char c) {
+		print(c);
+		println();
+	}
+	public void println(char s[]) {
+		print(s);
+		println();
+	}
+	public void println(double d) {
+		print(d);
+		println();
+	}
+	public void println(float f) {
+		print(f);
+		println();
+	}
+	public void println(int i) {
+		print(i);
+		println();
+	}
+	public void println(long l) {
+		print(l);
+		println();
+	}
+	public void println(Object obj) {
+		println(String.valueOf(obj));
+		println();
+	}
 	public void println(String str) {
 		if (str == null) {
 			print("null");
 		} else {
 			print(str);
 		}
-		print(Character.LINE_SEPARATOR);
-	}
-	
-	public void println(char c) {
-		print(c);
-		print(Character.LINE_SEPARATOR);
-	}
-	
-	public void println(Object obj) {
-		if (obj == null) {
-			println("null");
-		} else {
-			println(obj.toString());
-		}
+		println();
 	}
 }

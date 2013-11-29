@@ -17,8 +17,8 @@ public class ByteArrayOutputStream extends OutputStream {
 	public void write(int b) {
 		ensureCapacity(count + 1);
 		
-		count++;
 		buff[count] = (byte) (0xff & b);
+		count++;
 	}
 	public void write(byte[] bytes, int offset, int length)
 			throws NullPointerException, IndexOutOfBoundsException {
