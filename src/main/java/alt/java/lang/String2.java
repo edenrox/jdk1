@@ -1,5 +1,7 @@
 package alt.java.lang;
 
+import java.util.Hashtable;
+
 import alt.java.lang.Character;
 import alt.java.lang.IndexOutOfBoundsException;
 
@@ -9,6 +11,8 @@ public class String2 {
 	private static final char[] EMPTY_BUFFER = new char[0];
 	private static final char SPACE_CHAR = ' ';
 	private static final String2 EMPTY_STRING = new String2();
+	
+	private static Hashtable internedStrings;
 
 	protected int offset;
 	protected int size;
@@ -355,5 +359,15 @@ public class String2 {
 	
 	public boolean endsWith(String2 suffix) throws NullPointerException {
 		return regionMatches(length() - suffix.length(), suffix, 0, suffix.length());
+	}
+	
+	public String2 intern() {
+		if (internedStrings == null) {
+			internedStrings = new Hashtable();
+		}
+		if (!internedStrings.containsKey(this)) {
+			internedStrings.put(this, this);
+		}
+		return (String2) internedStrings.get(this);
 	}
 }
