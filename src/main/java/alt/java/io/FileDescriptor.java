@@ -13,4 +13,8 @@ public final class FileDescriptor {
 	public boolean valid() {
 		return (fd != -1);
 	}
+	
+	public String toString() {
+		return "FileDescriptor[" + fd + "]";
+	}
 }
