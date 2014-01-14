@@ -36,4 +36,14 @@ public class RandomTest {
 		}
 	}
 
+	@Test
+	public void testRandom() {
+		Random r1 = new Random();
+		double last = 0.0, cur;
+		for(int i = 0; i < 100; i++) {
+			cur = r1.nextDouble();
+			assertNotEquals(cur, last, 0.0000001);
+			last = cur;
+		}
+	}
 }
