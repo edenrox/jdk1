@@ -18,7 +18,7 @@ public class BufferedOutputStream {
 	
 	public void write(int b) throws IOException {
 		if (count == buffer.length) {
-			flush();
+			flushBuffer();
 		}
 		buffer[count] = (byte) b;
 		count++;
@@ -31,7 +31,7 @@ public class BufferedOutputStream {
 	public void write(byte[] buffer, int offset, int length) throws IOException, NullPointerException {
 		while (length > 0) {
 			if (count == buffer.length) {
-				flush();
+				flushBuffer();
 			}
 			int bytesToWrite = Math.min(length, buffer.length - count);
 			System.arraycopy(buffer, offset, buffer, count, bytesToWrite);
@@ -40,9 +40,13 @@ public class BufferedOutputStream {
 		}
 	}
 	
-	public void flush() throws IOException {
+	private void flushBuffer() throws IOException {
 		out.write(buffer, 0, count);
-		out.flush();
 		count = 0;
+	}
+	
+	public void flush() throws IOException {
+		flushBuffer();
+		out.flush();
 	}
 }
