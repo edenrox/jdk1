@@ -28,7 +28,7 @@ public class ByteArrayOutputStreamTest {
 		
 		os.write('e');
 
-		assertEquals("this is it and a bit more", new String(os.toByteArray()));
+		assertEquals("This is it and a bit more", new String(os.toByteArray()));
 	}
 	
 	@Test
@@ -42,5 +42,31 @@ public class ByteArrayOutputStreamTest {
 		assertEquals(str.length() + str2.length(), os.size());
 	}
 	
-
+	@Test
+	public void testExpand() throws Exception {
+		ByteArrayOutputStream smallOS = new ByteArrayOutputStream(8);
+		
+		smallOS.write("12345".getBytes());
+		assertEquals("12345", smallOS.toString());
+		
+		smallOS.write("678910".getBytes());
+		assertEquals("12345678910", smallOS.toString());
+		
+		smallOS.write("11121314151617181920".getBytes());
+		assertEquals("1234567891011121314151617181920", smallOS.toString());
+	}
+	
+	@Test
+	public void testReset() throws Exception {
+		
+		os.write("tester".getBytes());
+		assertEquals("tester", os.toString());
+		
+		os.reset();
+		assertEquals("", os.toString());
+		
+		os.write("smeagol".getBytes());
+		assertEquals("smeagol", os.toString());
+	}
+	
 }
