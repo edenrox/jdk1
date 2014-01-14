@@ -13,7 +13,7 @@ public class LineNumberInputStream extends FilterInputStream {
 	
 	public int read() throws IOException {
 		int rv = super.read();
-		if (rv == Character.LINE_SEPARATOR) {
+		if (isNewlineByte((byte) rv)) {
 			lineNumber++;
 		}
 		return rv;
@@ -33,9 +33,14 @@ public class LineNumberInputStream extends FilterInputStream {
 		return rv;
 	}
 	
+	private boolean isNewlineByte(byte b) {
+		return ((b == '\n') || (b == '\r'));
+	}
+	
+	
 	private void incrementLines(byte[] bytes, int offset, int numRead) {
 		for(int i = offset; i < numRead; i++) {
-			if (bytes[i] == Character.LINE_SEPARATOR) {
+			if (isNewlineByte(bytes[i])) {
 				lineNumber++;
 			}
 		}
