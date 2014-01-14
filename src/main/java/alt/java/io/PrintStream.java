@@ -95,7 +95,7 @@ public class PrintStream extends FilterOutputStream {
 	}
 	
 	public void println() {
-		print(Character.LINE_SEPARATOR);
+		print('\n');
 	}
 	public void println(boolean b) {
 		print(b);
@@ -126,7 +126,7 @@ public class PrintStream extends FilterOutputStream {
 		println();
 	}
 	public void println(Object obj) {
-		println(String.valueOf(obj));
+		print(String.valueOf(obj));
 		println();
 	}
 	public void println(String str) {
