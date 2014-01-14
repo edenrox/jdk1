@@ -17,7 +17,7 @@ public class FilterInputStream extends InputStream {
 	}
 	
 	public int read(byte[] bytes, int offset, int length) throws IOException, NullPointerException {
-		return in.read(bytes, 0, bytes.length);
+		return in.read(bytes, offset, length);
 	}
 	
 	public long skip(long n) throws IOException {
