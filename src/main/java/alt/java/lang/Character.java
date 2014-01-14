@@ -115,8 +115,16 @@ public class Character {
 		if (!isValidChar(ch, radix)) {
 			return -1;
 		}
-		
-		return 0;
+		int value = 0;
+		if (ch <= '9') {
+			value = ch - '0';
+		} else {
+			value = ch - 'a' + 10;
+		}
+		if (value > radix) {
+			return -1;
+		}
+		return value;
 	}
 	
 	public static char forDigit(int digit, int radix) {
