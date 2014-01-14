@@ -209,6 +209,9 @@ public class Vector
 	
 	public int indexOf(Object elem, int index) 
 			throws IndexOutOfBoundsException {
+		if (index == elementCount) {
+			return INDEX_NOT_FOUND;
+		}
 		checkIndex(index);
 		for(int i = index; i < elementCount; i++) {
 			if (elem == null) {
