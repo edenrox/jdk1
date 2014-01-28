@@ -6,9 +6,12 @@ import org.junit.Test;
 
 public class PipedStreamTest {
 
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
+	
+
+
+
+
+	
+
 
 }

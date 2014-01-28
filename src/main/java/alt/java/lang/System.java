@@ -1,13 +1,8 @@
 package alt.java.lang;
 
-import alt.java.io.FileOutputStream;
-import alt.java.io.InputStream;
-import alt.java.io.PrintStream;
-import alt.java.io.FileDescriptor;
-import alt.java.io.FileInputStream;
-import alt.java.lang.ArrayStoreException;
-import alt.java.lang.IndexOutOfBoundsException;
-import alt.java.util.Properties;
+import java.lang.Runtime;
+import java.io.*;
+import java.util.Properties;
 
 public class System {
 

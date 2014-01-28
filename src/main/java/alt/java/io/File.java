@@ -11,19 +11,16 @@ public class File {
 	private String name;
 	
 	public File(String name) throws NullPointerException {
-		init(null, name);
+		this((File) null, name);
 	}
 	public File(String dirname, String name) throws NullPointerException {
-		init(dirname, name);
+		this(new File(dirname), name);
 	}
 	public File(File dir, String name) throws NullPointerException {
-		init(dir.getName(), name);
-	}
-	
-	private void init(String dirname, String name) throws NullPointerException {
 		if (name == null) {
 			throw new NullPointerException("name cannot be null");
 		}
+		this.parent = dir;
 		this.name = name;
 	}
 	
@@ -92,27 +89,29 @@ public class File {
 	
 	public boolean exists() throws SecurityException {
 		checkRead();
-		
-		return false;
+		return exists0();
 	}
+	private native boolean exists0();
 		
 	public boolean canRead() throws SecurityException {
 		checkRead();
-		
-		return false;
+		return canRead0();
 	}
+	private native boolean canRead0();
 	
 	public boolean isFile() throws SecurityException {
 		checkRead();
 		
-		return false;
+		return isFile0();
 	}
+	private native boolean isFile0();
 	
 	public boolean isDirectory() throws SecurityException {
 		checkRead();
 		
-		return false;
+		return isDirectory0();
 	}
+	private native boolean isDirectory0();
 	
 	public long lastModified() throws SecurityException {
 		checkRead();
@@ -134,8 +133,15 @@ public class File {
 	
 	public boolean mkdirs() throws SecurityException {
 		checkWrite();
-		
-		return false;
+	
+		String parent = getParent();
+		if (parent != null) {
+			File parentFile = new File(parent);
+			if (!parentFile.mkdirs()) {
+				return false;
+			}
+		}
+		return mkdir();
 	}
 	
 	public String[] list() throws SecurityException {
@@ -146,9 +152,27 @@ public class File {
 	}
 	
 	public String[] list(FilenameFilter filter) {
-		checkRead();
+		String[] list = list();
 		
-		return new String[] {};
+		// How many files match?
+		int matches = 0;
+		for(int i = 0; i < list.length; i++) {
+			if (filter.accept(this, list[i])) {
+				matches++;
+			}
+		}
+		
+		// Build the array of matches
+		String[] rv = new String[matches];
+		int pos = 0;
+		for(int i = 0; i < list.length; i++) {
+			if (filter.accept(this, list[i])) {
+				rv[pos] = list[i];
+				pos++;
+			}
+		}
+		
+		return rv;
 	}
 	
 	public boolean renameTo(File dest) throws SecurityException {
